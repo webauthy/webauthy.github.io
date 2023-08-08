@@ -1,1 +1,389 @@
-Hello github.
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>TOTP Authenticator | Authenticator Compatible Google</title>
+        <meta name="keywords" content="TOTP Authenticator, Google Authenticator, Time-based One-time Password, 安全令牌, 兼容谷歌安全令牌, 二次验证码">
+        <!-- 通过在google输入Google Authenticator来获取提示词作为关键字列表 -->
+        <meta name="description" content="This is a handy TOTP (Time-based One-time Password) based authenticator webapp which is used to authenticate into various websites which offer Two-Step Authentication. You can use it instead of Google Authenticator">
+        <link rel="manifest" href="manifest.json">
+        <style>
+        *{margin:0px;padding:0px;border:none;border-radius:0px;color:#fff;}
+        img{outline:none;}
+        body{background:#112435;}
+        ul{list-style:none;}
+        ul li{display:block;}
+        .ellipsis{white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        
+        .main{width:100%;height:100%;}
+
+        .toolbar{background:#1d3e5c;width:100%;height:40px;line-height:40px;color:#fff;clear:both;}
+        
+        .toolbar a{display:inline-block;text-align:center;color:#fff;height:25px;line-height:25px;border-radius:5px;text-decoration:none;}
+        .toolbar a:link{color:#fff;}
+        .toolbar a:visited{color:#fff;}
+        .toolbar a:hover{color:#fff;}
+        .toolbar a:active{color:#fff;}
+        
+        .toolbar .more-btn{width:25px;border:1px solid #0072f5;box-shadow:0 0 3px #0072f5;letter-spacing:1.5px;-moz-transform:rotate(-90deg);-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);}
+        
+        .toolbar .save-btn{border:1px solid #0072f5;box-shadow:0 0 3px #0072f5;padding-left:5px;padding-right:5px;margin-right:10px;}
+        .toolbar .save-btn i:before{content:"+";font-size:18px;font-style:normal;font-weight:bold;}
+        
+        .more-menu{position:absolute;display:none;z-index:100;background:#1d3e5c;border:1px solid #113f68;border-top:none;right:0px;top:40px;}
+        .more-menu li{display:block;padding:2px 5px;width:70px;height:25px;line-height:25px;}
+        .more-menu li:hover{background:#0261bb;}
+        .more-menu li:not(:last-child){border-bottom:1px solid #113f68;}
+        
+        .content{width:100%;min-height:100px;padding:0px;}
+
+        .footer{color:#aaa;margin-top:45px;margin-bottom:10px;}
+        .footer p{width:100%;text-align:center;font-size:12px;margin-top:15px;color:#aaa;}
+        .footer a:link{color:#1979CA;}
+        .footer a:visited{color:#1979CA;}
+        .footer a:hover{color:#1979CA;}
+        .footer a:active{color:#1979CA;}
+        </style>
+        <script>
+        var debugMode = true;
+        
+        function isZhCn(){
+            return navigator.language && navigator.language.toLowerCase() === 'zh-cn';
+        }
+        if (isZhCn()) {
+            document.write('<link rel="stylesheet" type="text/css" href="css/zh-cn.css" />');
+        } else {
+            document.write('<link rel="stylesheet" type="text/css" href="css/en-us.css" />');
+        }
+        </script>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="toolbar">
+                <div style="float:left;margin-left:8px;">
+                    <a id="scan-btn" class="save-btn" href="javascript:void(0);"><i></i><span class="zh-cn">扫描二维码</span><span class="en-us">Add by scanning</span></a>
+                    <a id="pickImage-btn" class="save-btn" href="javascript:void(0);"><i></i><span class="zh-cn">选择二维码图片</span><span class="en-us">Add by qrcode image</span></a>
+                </div>
+                <div style="float:right;margin-right:8px;position:relative;z-index:102;">
+                    <a id="more-btn" class="more-btn" href="javascript:void(0);">···</a>
+                    <ul id="more-menu" class="more-menu overlay">
+                    <!--<li><span class="zh-cn">修改密码</span><span class="en-us">Change Password</span></li>-->
+                    <li id="refresh-btn"><span class="zh-cn">刷新</span><span class="en-us">Refresh</span></li>
+                    <li id="backup-btn"><span class="zh-cn">本地备份</span><span class="en-us">Local Backup</span></li>
+                    <li id="restore-btn"><span class="zh-cn">本地恢复</span><span class="en-us">Restore</span></li>
+                    <!--<li id="terms-btn"><span class="zh-cn">免责条款</span><span class="en-us">Exemption terms</span></li>-->
+                    <li id="donate-btn"><span class="zh-cn">打赏</span><span class="en-us">Donate</span></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- toolbar end -->
+            <div class="content" id="container">
+                <!--
+                <div class="row warning-border">
+                    <div class="item">
+                        <div class="code">1234567</div>
+                        <div class="issuer">abcdef@ffdd.com</div>
+                        <a href="javascript:void(0);" class="del-btn"></a>
+                    </div>
+                    <div class="bar-slot"><div class="bar" style="-moz-animation:growing 30s linear;-webkit-animation:growing 30s linear;animation:growing 30s linear,bgchanging 30s linear;"></div></div>
+                </div>
+                <div class="row flash-border">
+                    <div class="item">
+                        <div class="code">1234567</div>
+                        <div class="issuer">abcdef@ffdd.com</div>
+                        <a href="javascript:void(0);" class="del-btn"></a>
+                    </div>
+                    <div class="bar-slot"><div class="bar" style="-moz-animation:growing 30s linear;-webkit-animation:growing 30s linear;animation:growing 30s linear,bgchanging 30s linear;"></div></div>
+                </div>
+                -->
+            </div>
+            <!-- container end -->
+            <div class="footer">
+                <p>Designed & Powerd by Qingpeng Yee</p>
+                <p>Copyright© 2020-<script>document.write((new Date()).getFullYear())</script> </p>
+                <p><a href="javascript:+function(){var schm='mail'+''+'to'+'&#58;', vbx=['cjyf-yqp', '126.com']; location.href= schm + vbx.join('%' +(3*10+5*2))}();" >cjyf<span style="display:none;">web authenticator</span>-yqp@126.com</a></p>
+            </div>
+        </div>
+        <style>
+        .row{margin:0px;margin-top:15px;background:#003153;padding:0px;padding-top:8px;text-align:left;width:100%;/*box-sizing: border-box;*/}
+        .warning-border{box-shadow: 0 0 1px rgba(198,0,0,.7), inset 0 0 15px 2px rgba(198,0,0,.7);}
+        
+        .item{margin:0px 0px 3px 6px;position:relative;z-index:1;}
+        .item .code{font-size:22px;letter-spacing:5px;color:#35D4C7;}
+        .item .issuer, .item .issuer b{font-size:13px;color:#C0C0C0;}
+        .bar-slot{width:100%;height:4px;background:#273A4B;}
+        .bar-slot .bar{height:4px;background:#2c833f;border:none;margin:0px;}
+        
+        .flash-border{-moz-animation: flash 300ms ease-out 600ms 7 alternate; -webkit-animation: flash 300ms ease-out 600ms 7 alternate; animation: flash 300ms ease-out 600ms/*delay*/ 7/*count*/ alternate;}
+        .del-btn{position:absolute;z-index:1;right:0px;top:-8px;display:block;text-align:center;width:33px;height:53px;line-height:53px;font-size:28px;color:#C60000;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23A42034' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'%3E%3Cpath d='M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6'/%3E%3C/svg%3E") no-repeat;background-position: center;}/*icons from https://feathericons.com/?query=trash*/
+        
+        /*动画*/
+        @keyframes growing{
+            0%{width:100%;}
+            100%{width:0;}
+        }
+        
+        @keyframes bgchanging{
+            0%,49%{background:#2c833f;}
+            50%,79%{background:#ffc926;}
+            80%,100%{background:#C60000;}
+        }
+        
+        @keyframes flash{
+            0% {
+                box-shadow: 0 0 1px rgba(0,255,0,.2), inset 0 0 15px rgba(0,255,0,.2);
+                /*box-shadow: 0 0 4px rgba(0,255,0,.2), inset 0 0 4px rgba(0,255,0,.1), 0 2px 0 #393;*/
+            }
+            100% {
+                box-shadow: 0 0 1px rgba(0,255,0,.7), inset 0 0 15px rgba(0,255,0,.7);
+                /*box-shadow: 0 0 4px rgba(0,255,0,.6), inset 0 0 4px rgba(0,255,0,.4), 0 2px 0 #6f6;*/
+            }
+        }
+        </style>
+        <!-- section main end -->
+        
+        <style>
+            .mask-layer{display:none;position:fixed;top:0px;left:0px;width:100%;height:100%;z-index:998;opacity:.3;background:#fff;}
+            .scanner{display:none;z-index:999;position:fixed;top:0px;left:0px;width:100%;height:100%;}
+            .scanner .camera-box{box-sizing:border-box;width:250px;height:250px;border:5px solid #20202f;background:#000;margin:0 auto;margin-top:50px;opacity:1;position:relative;}
+            
+            .scanner .scanningline{position:absolute;height:3px;width:260px;top:0px;left:-10px;background:#F00;box-shadow:0 0 3px #ff2626;-moz-animation:scanning linear 2s infinite alternate;-webkit-animation:scanning linear 2s infinite alternate;animation:scanning linear 2s infinite alternate;}
+            
+            .scanner canvas{width:100%;height:100%;}
+            
+            .scanner .camera-options{width:260px;margin:0px auto;}
+            
+            .scanner .video-select{width:260px;margin:0px auto;margin-top:20px;}
+            
+            .scanner .close-btn{width:30px;height:30px;margin:auto;margin-top:50px;}
+            
+            .scanner .close-btn a{display:block;text-align:center;border:none;border-radius:50%;background: #000;width: 40px;height: 40px;line-height: 40px;font-size: 25px;text-decoration:none;}
+            .scanner .close-btn a:link{color:#fff;}
+            .scanner .close-btn a:visited{color:#fff;}
+            .scanner .close-btn a:hover{color:#fff;}
+            .scanner .close-btn a:active{color:#fff;}
+            
+            @keyframes scanning{
+                0%{top:0%;}
+                100%{top:calc(100% - 3px);} /*加减运算符号两边必须加空格*/
+            }
+        </style>
+        <div id="mask-layer" class="mask-layer "></div>
+        <div id="scanner" class="scanner " onclick="event.stopPropagation();">
+            
+            <div class="camera-box">
+                <div id="scanningline" class="scanningline"></div>
+                <canvas id="qr-canvas"></canvas>
+            </div>
+            <div class="camera-options">
+                <!--<div class="video-select"><form><select id="videoSources" style="width:200px;height:30px;"></select></form></div>-->
+                <div id="qrcodeResult"></div>
+                <div class="close-btn"><a href="javascript:void(Scanner.close());">X</a></div>
+            </div>
+        </div>
+        
+        <style>
+        .donate{display:none;position:fixed;bottom:0px;left:0px;width:100%;background:#FFF;padding:10px;height:120px;}
+        .donate *{color:#000;font-size:13px;}
+        .donate ul img{width:18px;height:18px;vertical-align:middle;margin:3px;margin-left:0;}
+        .donate ul li span, .donate ul li a{color:#2c833f;}
+        .donate .donate-close{text-align:center;margin-top:5px;}
+        .donate .donate-close a{font-size:14px;color:#00f;}
+        </style>
+        <div id="donate" class="donate " onclick="event.stopPropagation();">
+            <ul>
+                <li><img src="./images/paypal.svg" loading="lazy" alt="Paypal" >Paypal: <span><a target="_blank" href="https://paypal.me/doublesun?locale.x=zh_XC">paypal.me/doublesun</a></span></li>
+                <li><img src="./images/alipay.svg" loading="lazy" alt="AliPay">Alipay: <span>cjyf<b style="display:none;">web authenticator</b>-yqp@126.com</span></li>
+                <!--<li><img src="./images/wechat.svg" loading="lazy" alt="WeChat Pay"></li>-->
+            </ul>
+            <div class="donate-close"><a id="donate-close-btn" href="javascript:void(0);">Close</a></div>
+        </div>
+        
+        <style>
+        .alert{padding:0px;text-align:center;position:fixed;z-index:100;width:100%;height:40px;line-height: 40px;opacity: 0.8;margin:0 auto;bottom:0px;background:#1d3e5c; -webkit-transition: height 1s .2s;-moz-transition: height 1s .2s;-ms-transition: height 1s .2s;-o-transition: height 1s .2s;transition: height 1s .2s;}
+        .alert span{display:inline-block;text-align:padding:0px;center;cursor:pointer;margin-left:5px;width:18px;height:18px;line-height:18px;border-radius:50%;background:#FFF;color:#112435;font-size:14px;font-weight:bold;}
+        </style>
+        <div id="msg_toast" class="alert">
+            Please confirm your client time is correct. <span onclick="document.getElementById('msg_toast').style.height='0px';">X</span>
+        </div>
+        
+        <script src="js/sjcl.js"></script><!-- encrypt/decrypt -->
+        <script src="js/jsTOTP-es5.min.js"></script><!-- TOTP generator -->
+        <script src="js/llqrcode.min.js"></script><!-- merged from ./mergedjs/*.js-->
+        <script src="js/localforage.min.js"></script> <!-- A local storage libary with a simple, localStorage-like API -->
+        <script src="js/tools.js"></script>
+        <script src="js/scanner.js"></script>
+        <script src="js/UIItem.js"></script>
+        <script src="js/ItemsManager.js"></script>
+        
+    <script>
+    var UIInterface = {
+        _callFuncCatchError: function (func){
+            try {
+                if (isFunction(func)) {
+                    return func.call(this);
+                }
+            } catch (e) {
+                console.log(e);
+                alert(JSON.stringify(e));
+            }
+        },
+        addByImage: function (callback){
+            this._callFuncCatchError(function () {
+                var _self = this;
+                decodeLocalImage(function (content){
+                    onDecodeComplete(content, callback);
+                });
+            });
+        },
+        removeItem: function (id){
+            this._callFuncCatchError(function(){
+                if (confirm('Confirm to remove it?')) {
+                    ItemsManager.remove(id);
+                }
+            });
+        },
+        backup: function (){
+            this._callFuncCatchError(function(){
+                var encryptNeeded = false, fileName = formatDate('TOTP_Authenticator_backup_%Y%m%d%H%M%S.totp');
+                exportToFile(encryptNeeded, fileName);
+            });
+        },
+        restore: function (){
+            this._callFuncCatchError(function(){
+                var _self = this;
+                var overwrite = false;
+                importFromFile({overwrite:overwrite, onRestored: function(skippedItems){
+                    //console.log(skippedItems);
+                }});
+            });
+        }, 
+        refresh: function (){
+            this._callFuncCatchError(function(){
+                this.renderOtpList();
+            });
+        },
+        donate: function (){
+            if ($Id('donate').style.display == 'block') {
+                $Id('donate').style.display = 'none';
+            } else {
+                $Id('donate').style.display = 'block';
+            }
+        }
+    }
+    
+    function removeItem(id){
+        UIInterface.removeItem(id);
+    }
+    
+    function onDecodeComplete(content, callback){
+        isFunction(callback) && callback(content);
+        if (!testOtpAuthUri(content)) return;
+        var uiitem = entry(content);
+        if (uiitem) uiitem.flashBorder();
+    }
+    //entry('otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=10');
+    function entry(url){
+        try {
+            var OTPEntity = parseOtpAuthUri(url);
+            if (ItemsManager.has(OTPEntity.id)) {
+                ItemsManager.updateSecret(OTPEntity);
+            } else {
+                ItemsManager.showOTPCode(OTPEntity);
+            }
+            return ItemsManager.getUIItem(OTPEntity.id);
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+    
+    function exportToFile(encrypting, filename){ //to do
+        filename = filename || 'optauth_accounts.totp';
+        encrypting = encrypting || false;
+        var downloadUrl = ItemsManager.genBackupUrl(encrypting);
+        downloadUrl && forceDownload(downloadUrl, filename);
+    }
+    
+    function importFromFile(options){ //to do
+        options = options || {};
+        openFileDlg(function(content){
+            var skippedItems = ItemsManager.restoreFromBackup(content, options['overwrite'] || false);
+            isFunction(options['onRestored']) && options['onRestored'].apply(null, [skippedItems]);
+        }, {accept: '.totp', mimeType: 'text/totp'});
+    }
+    
+    function showMenu(e){
+        $Id('more-menu').style.display = 'block';
+        e.stopPropagation();
+    }
+    
+    function hideOverlays(){
+        var nodelist = document.querySelectorAll('.overlay');
+        for (var i in nodelist) {
+            if (nodelist.hasOwnProperty(i)) {
+                nodelist[i].style.display = 'none';
+            }
+        }
+    }
+    
+    window.onload = function () {
+        $on(document, 'click', function (){
+            hideOverlays();
+        });
+        $on('scan-btn', 'click', function (){
+            Scanner.open();
+        });
+        $on('pickImage-btn', 'click', function (){
+            UIInterface.addByImage(function(content){
+                //console.log(content);
+            });
+        });
+        $on('more-btn', 'click', function (e){
+            showMenu(e);
+        });
+        $on('refresh-btn', 'click', function (){
+            location.reload();
+        });
+        $on('backup-btn', 'click', function (){
+            UIInterface.backup();
+        });
+        $on('restore-btn', 'click', function (){
+            UIInterface.restore();
+        });
+        $on('donate-btn', 'click', function (){
+            UIInterface.donate();
+        });
+        $on('donate-close-btn', 'click', function (){
+            UIInterface.donate();
+        });
+        
+        ItemsManager.setContainer($Id('container')).loadFromStorage(function (items){
+            if (items.length == 0) {
+                // 样例展示
+                var sample = {
+                    id: 'totp/sample.com:test@sample.com',
+                    schema: 'totp',
+                    account: "test@sample.com",
+                    secret: "HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ",
+                    issuer: "sample.com",
+                    algorithm: "SHA1",
+                    digits: 6,
+                    period: 30
+                };
+                ItemsManager.showOTPCode(sample, false);
+            }
+            
+            setSecondTick(function (){
+                ItemsManager.observe();
+            });
+        });
+        
+        setTimeout(function () {
+            document.getElementById('msg_toast').style.height='0px';
+        }, 6000);
+    }
+    </script>
+    </body>
+</html>
