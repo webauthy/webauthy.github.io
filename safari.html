@@ -7,7 +7,7 @@
 </head>
 <body>
     <p id="videoBox"></p>
-    <p id="videoCanvasBox"><canvas id="videoCanvas"></canvas></p>
+    <p id="videoCanvasBox"><canvas id="videoCanvas" style="width:250px; height:250px;display:none;"></canvas></p>
     <p><button onclick="getUserMedia()">GetUserMedia</button></p>
     
     <script>
@@ -46,10 +46,11 @@
             video.autoplay = true;
             video.streamSrc(stream);
             video.play();
-            //document.getElementById('videoBox').appendChild(video);
+            document.getElementById('videoBox').appendChild(video);
             var canvasElement = document.getElementById('videoCanvas');
             var canvas = canvasElement.getContext("2d");
             canvas.clearRect(0, 0, canvasElement.width || 0, canvasElement.height || 0);
+            canvasElement.style.display = 'block';
             setInterval(function () {
                 canvasElement.height = video.videoHeight;
                 canvasElement.width = video.videoWidth;
