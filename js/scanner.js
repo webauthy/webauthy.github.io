@@ -77,9 +77,8 @@
             return this;
         },
         onSuccess: function (data){
-            alert(data);
             //console.log(data);
-            //onDecodeComplete(data);
+            onDecodeComplete(data);
             //$Id('qrcodeResult').innerHTML = data;
             //$Id('capturedImage').src = this.canvasElement.toDataURL();
         },
