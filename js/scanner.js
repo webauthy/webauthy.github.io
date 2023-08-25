@@ -122,8 +122,8 @@
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                 // var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-                //imageData = grayScale(imageData); //灰度化
-                // canvas.putImageData(imageData, 0, 0);
+                //imageData = grayScale(imageData); //不做灰度化处理
+                // canvas.putImageData(imageData, 0, 0); // 这代码在safari中无法运行
                 
                 try {
                     qrcode.decode(canvasElement.toDataURL());
