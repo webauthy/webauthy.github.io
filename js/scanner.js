@@ -125,8 +125,11 @@
                 var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
                 //imageData = grayScale(imageData); //灰度化
                 canvas.putImageData(imageData, 0, 0);
+                var p = document.createElement('p');
+                p.innerHTML = new Date().getTime();
+                document.getElementById('debugInfoBox').appendChild(p);
                 try {
-                    qrcode.decode(canvasElement.toDataURL());
+                    //qrcode.decode(canvasElement.toDataURL());
                 } catch (e){}
                 _self.tick();
             }, 200);
