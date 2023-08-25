@@ -106,7 +106,6 @@
                 video.streamSrc(stream);
                 _self.videoStream = stream;
                 video.play();
-                document.getElementById('videoWrapper').appendChild(video); // debug
                 _self.tick();
             }).catch(function (){
                 _self.close();
@@ -125,12 +124,14 @@
                 var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
                 //imageData = grayScale(imageData); //灰度化
                 canvas.putImageData(imageData, 0, 0);
-                var p = document.createElement('p');
-                p.innerHTML = new Date().getTime();
-                document.getElementById('debugInfoBox').appendChild(p);
+                
                 try {
-                    //qrcode.decode(canvasElement.toDataURL());
-                } catch (e){}
+                    qrcode.decode(canvasElement.toDataURL());
+                } catch (e){
+                    var p = document.createElement('p');
+                    p.innerHTML = new Date().getSeconds() + ": " + e.toString();
+                    document.getElementById('debugInfoBox').appendChild(p);
+                }
                 _self.tick();
             }, 200);
         },
