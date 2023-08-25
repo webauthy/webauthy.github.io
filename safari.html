@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Test API In Safari</title>
 </head>
 <body>
     <p id="videoBox"></p>
-    <p><button onclick="getUserMedia">GetUserMedia</button></p>
+    <p><button onclick="getUserMedia()">GetUserMedia</button></p>
     
     <script>
     HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? 
@@ -20,6 +21,7 @@
                 this.removeAttribute('src');
             }
         };
+    
     function getUserMedia() {
         var mediaDevices = window.navigator.mediaDevices;
         if (mediaDevices.getUserMedia) {
@@ -41,6 +43,7 @@
             video.autoplay = true;
             video.streamSrc(stream);
             video.play();
+            document.getElementById('videoBox').appendChild(video);
         }).catch(error=>{
             alert("error" + error.toString());
         });
