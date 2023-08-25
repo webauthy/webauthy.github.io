@@ -7,10 +7,12 @@
 </head>
 <body>
     <p id="videoBox"></p>
+    <p id="videoCanvasBox"><canvas id="videoCanvas"></canvas></p>
     <p><button onclick="getUserMedia()">GetUserMedia</button></p>
     
     <script>
-    HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? 
+    (function () {
+        HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? 
         function(stream) {
             this.srcObject = !!stream ? stream : null;
         } : 
@@ -21,6 +23,7 @@
                 this.removeAttribute('src');
             }
         };
+    }) ();
     
     function getUserMedia() {
         var mediaDevices = window.navigator.mediaDevices;
@@ -43,7 +46,17 @@
             video.autoplay = true;
             video.streamSrc(stream);
             video.play();
-            document.getElementById('videoBox').appendChild(video);
+            //document.getElementById('videoBox').appendChild(video);
+            var canvasElement = document.getElementById('videoCanvas');
+            var canvas = canvasElement.getContext("2d");
+            canvas.clearRect(0, 0, canvasElement.width || 0, canvasElement.height || 0);
+            setInterval(function () {
+                canvasElement.height = video.videoHeight;
+                canvasElement.width = video.videoWidth;
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                canvas.putImageData(imageData, 0, 0);
+            }, 300);
         }).catch(error=>{
             alert("error" + error.toString());
         });
