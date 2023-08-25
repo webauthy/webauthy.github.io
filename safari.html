@@ -33,7 +33,7 @@
                 });
             }
         }
-        mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false).then(stream => {
+        mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false}).then(stream => {
             //<video muted autoplay playsinline></video>
             var video = document.createElement('video');
             video.muted=true;
