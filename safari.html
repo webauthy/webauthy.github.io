@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test API In Safari</title>
+</head>
+<body>
+    <p id="videoBox"></p>
+    <p><button onclick="getUserMedia">GetUserMedia</button></p>
+    
+    <script>
+    HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? 
+        function(stream) {
+            this.srcObject = !!stream ? stream : null;
+        } : 
+        function(stream) {
+            if (!!stream) {
+                this.src = (window.URL || window.webkitURL).createObjectURL(stream);
+            } else {
+                this.removeAttribute('src');
+            }
+        };
+    function getUserMedia() {
+        var mediaDevices = window.navigator.mediaDevices;
+        if (mediaDevices.getUserMedia) {
+            alert('mediaDevices.getUserMedia is supported.');
+            
+        } else {
+            alert('mediaDevices.getUserMedia is not supported.');
+            mediaDevices.getUserMedia = function(c) {
+                return new Promise(function(y, n) {
+                    (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
+                });
+            }
+        }
+        mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false).then(stream => {
+            //<video muted autoplay playsinline></video>
+            var video = document.createElement('video');
+            video.muted=true;
+            video.playsinline = true;
+            video.autoplay = true;
+            video.streamSrc(stream);
+            video.play();
+        }).catch(error=>{
+            alert("error" + error.toString());
+        });
+    }
+    </script>
+</body>
+</html>
