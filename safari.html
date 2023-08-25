@@ -9,7 +9,8 @@
     <p id="videoBox"></p>
     <p id="videoCanvasBox"><canvas id="videoCanvas" style="width:250px; height:250px;display:none;"></canvas></p>
     <p><button onclick="getUserMedia()">GetUserMedia</button></p>
-    
+    <p><button onclick="QRCodeDecode()">QRCodeDecode</button></p>
+    <script src="js/llqrcode.min.js"></script>
     <script>
     (function () {
         HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? 
@@ -23,7 +24,29 @@
                 this.removeAttribute('src');
             }
         };
+        
+        qrcode.callback = function (data){
+                    if (!(data instanceof Error)) {
+                        alert(data);
+                    } else {
+                        alert('Error' + data);
+                    }
+                };
     }) ();
+    
+    function QRCodeDecode(){
+        var canvasElement = document.createElement('canvas');
+        var ctx = canvasElement.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+            canvasElement.width = img.width;
+            canvasElement.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            qrcode.decode(canvasElement.toDataURL());
+        };
+        img.src = "images/totp.png";
+        document.getElementById('videoBox').appendChild(canvasElement);
+    }
     
     function getUserMedia() {
         var mediaDevices = window.navigator.mediaDevices;
@@ -55,8 +78,8 @@
                 canvasElement.height = video.videoHeight;
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-                canvas.putImageData(imageData, 0, 0);
+                //var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                //canvas.putImageData(imageData, 0, 0);
             }, 300);
         }).catch(error=>{
             alert("error" + error.toString());
