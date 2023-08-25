@@ -40,11 +40,14 @@
                 this.inited = true;
                 this.Audio.init();
                 this.mediaDevices = window.navigator.mediaDevices;
-                this.mediaDevices.getUserMedia = function(c) {
-                    return new Promise(function(y, n) {
-                        (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
-                    });
-                };
+                if (!this.mediaDevices.getUserMedia) {
+                    this.mediaDevices.getUserMedia = function(c) {
+                        return new Promise(function(y, n) {
+                            (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
+                        });
+                    };
+                }
+                
                 HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? function(stream) {
                     this.srcObject = !!stream ? stream : null;
                 } : function(stream) {
