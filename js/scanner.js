@@ -39,15 +39,6 @@
                 this.canvas = canvas;
                 this.inited = true;
                 this.Audio.init();
-                this.mediaDevices = window.navigator.mediaDevices;
-                if (!this.mediaDevices.getUserMedia) {
-                    this.mediaDevices.getUserMedia = function(c) {
-                        return new Promise(function(y, n) {
-                            (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
-                        });
-                    };
-                }
-                
                 HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? function(stream) {
                     this.srcObject = !!stream ? stream : null;
                 } : function(stream) {
@@ -57,6 +48,15 @@
                         this.removeAttribute('src');
                     }
                 };
+                this.mediaDevices = window.navigator.mediaDevices;
+                if (!this.mediaDevices.getUserMedia) {
+                    this.mediaDevices.getUserMedia = function(c) {
+                        return new Promise(function(y, n) {
+                            (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
+                        });
+                    };
+                }
+                
                 qrcode.callback = function (data){
                     if (!(data instanceof Error)) {
                         _self.Audio.play();
@@ -106,6 +106,7 @@
                 video.streamSrc(stream);
                 _self.videoStream = stream;
                 video.play();
+                document.getElementById('videoWrapper').appendChild(video); // debug
                 _self.tick();
             }).catch(function (){
                 _self.close();
