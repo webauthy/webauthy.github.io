@@ -77,8 +77,9 @@
             return this;
         },
         onSuccess: function (data){
-            console.log(data);
-            onDecodeComplete(data);
+            alert(data);
+            //console.log(data);
+            //onDecodeComplete(data);
             //$Id('qrcodeResult').innerHTML = data;
             //$Id('capturedImage').src = this.canvasElement.toDataURL();
         },
@@ -121,17 +122,13 @@
                 canvasElement.height = video.videoHeight;
                 canvasElement.width = video.videoWidth;
                 canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                // var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
                 //imageData = grayScale(imageData); //灰度化
-                canvas.putImageData(imageData, 0, 0);
+                // canvas.putImageData(imageData, 0, 0);
                 
                 try {
                     qrcode.decode(canvasElement.toDataURL());
-                } catch (e){
-                    var p = document.createElement('p');
-                    p.innerHTML = new Date().getSeconds() + ": " + e.toString();
-                    document.getElementById('debugInfoBox').appendChild(p);
-                }
+                } catch (e){}
                 _self.tick();
             }, 200);
         },
