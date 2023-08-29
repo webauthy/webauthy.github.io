@@ -1,0 +1,79 @@
+{
+    "lang": "en-us",
+    "name": "Web Authenticator",
+    "short_name": "Web Authenticator",
+    "description": "Web Authenticator is a web-based free, across platforms and open-source authenticator. It has these features: Compatible with Google Authenticator(can use it instead of Google Authenticator); Backup authentication data; Scanning or reading local qr-code (QR code) image; Across platforms(can work on mobile, PC, Chrome, Safari, Firefox etc); Being Very safe(no any local data is transferred to server side); Not requiring additional sofware installation (If, you will, can also install it)",
+    "scope": "/",
+    "id":"/index.html",
+    "start_url": "/index.html",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/icons/icon192.png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/maskable_icon_x192.png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icons/maskable_icon_x128.png",
+            "sizes": "128x128",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icons/maskable_icon_x48.png",
+            "sizes": "48x48",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icons/maskable_icon_x72.png",
+            "sizes": "72x72",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icons/maskable_icon_x96.png",
+            "sizes": "96x96",
+            "purpose": "maskable"
+        }
+    ],
+    "file_handlers": [
+        {
+            "action": "/restore/",
+            "accept": {
+                "text/totp": [
+                    ".totp"
+                ]
+            }
+        },
+        {
+            "action": "/backup/",
+            "accept": {
+                "text/totp": [
+                    ".totp"
+                ]
+            }
+        }
+    ],
+    "protocol_handlers": [
+    ],
+    "display_override": ["window-controls-overlay"],
+    "shortcuts" : [
+        {
+          "name": "Web Authenticator",
+          "url": "/",
+          "description": "",
+          "icons": [{ "src": "/icons/icon192.png", "sizes": "192x192" }]
+        }
+    ],
+    "url_handlers": [
+        {
+          "origin": ""
+        }
+    ]
+}
