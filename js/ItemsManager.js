@@ -159,7 +159,7 @@
             if (!data) return;
             var skipped = [], items;
             if (data.encrypted) {
-                var token = prompt("Please enter the password which was set on backup.", "");
+                var token = prompt("Please enter the password.", "");
                 if (!token) return;
                 items = decrypt(token, data.data);
             } else {

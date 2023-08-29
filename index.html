@@ -3,10 +3,9 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <title>TOTP Authenticator | Authenticator Compatible Google</title>
-        <meta name="keywords" content="TOTP Authenticator, Google Authenticator, Time-based One-time Password, 安全令牌, 兼容谷歌安全令牌, 二次验证码">
-        <!-- 通过在google输入Google Authenticator来获取提示词作为关键字列表 -->
-        <meta name="description" content="This is a handy TOTP (Time-based One-time Password) based authenticator webapp which is used to authenticate into various websites which offer Two-Step Authentication. You can use it instead of Google Authenticator">
+        <title>Web Authenticator</title>
+        <meta name="keywords" content="Web-based Authenticator, Authenticator backup, Authenticator across platforms, TOTP Authenticator, Google Authenticator, Time-based One-time Password, Two-Step Authentication, 安全令牌, 兼容谷歌安全令牌, 二次验证码">
+        <meta name="description" content="Web Authenticator is a web-based free, across platforms and open-source authenticator. It has these features: Compatible with Google Authenticator(can use it instead of Google Authenticator); Backup authentication data; Scanning or reading local qr-code (QR code) image; Across platforms(can work on mobile, PC, Chrome, Safari, Firefox etc); Being Very safe(no any local data is transferred to server side); Not requiring additional sofware installation (If, you will, can also install it)">
         <link rel="shortcut icon" href="icons/icon48.png" />
         <link rel="manifest" href="manifest.json">
         <style>
@@ -181,7 +180,7 @@
             <div class="camera-options">
                 <!--<div class="video-select"><form><select id="videoSources" style="width:200px;height:30px;"></select></form></div>-->
                 <div id="qrcodeResult"></div>
-                <div class="close-btn"><a href="javascript:void(Scanner.close());">X</a></div>
+                <div class="close-btn"><a href="javascript:void(Scanner.close());">&#10006;</a></div>
             </div>
         </div>
         
@@ -207,12 +206,12 @@
         .alert span{display:inline-block;text-align:padding:0px;center;cursor:pointer;margin-left:5px;width:18px;height:18px;line-height:18px;border-radius:50%;background:#FFF;color:#112435;font-size:14px;font-weight:bold;}
         </style>
         <div id="msg_toast" class="alert">
-            Please confirm your client time is correct. <span onclick="document.getElementById('msg_toast').style.height='0px';">X</span>
+            Please confirm your client time is correct. <span onclick="document.getElementById('msg_toast').style.height='0px';"><!--&#x2716;-->&#10006;</span>
         </div>
         
         <script src="js/sjcl.js"></script><!-- encrypt/decrypt -->
         <script src="js/jsTOTP-es5.min.js"></script><!-- TOTP generator -->
-        <script src="js/llqrcode.min.js"></script><!-- merged from ./mergedjs/*.js-->
+        <script src="js/llqrcode.min.js"></script><!-- QRCode decoding libary merged from ./mergedjs/*.js-->
         <script src="js/localforage.min.js"></script> <!-- A local storage libary with a simple, localStorage-like API -->
         <script src="js/tools.js"></script>
         <script src="js/scanner.js"></script>
