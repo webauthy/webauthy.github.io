@@ -4,7 +4,7 @@
      * https://www.sitepoint.com/create-qr-code-reader-mobile-website/
      * https://github.com/Rosataker/webcodecam/blob/master/js/webcodecamjs.js
      * 2) 此版本仅支持较新的safari，如果需要支持老版本safari,目前还不知道如何实现，
-     * 或许可以从以下源码中获得灵感（Maybe we can get solutions from below libaries to support old safari.）：
+     * 或许可以从以下源码中获得灵感（Maybe we can get solutions from below libraries to support old safari.）：
      * https://github.com/webrtcHacks/adapter/blob/main/src/js/safari/safari_shim.js
      * https://github.com/otalk/getUserMedia/blob/master/getusermedia.js
      */
