@@ -185,7 +185,7 @@
         </div>
         
         <style>
-        .donate{display:none;position:fixed;bottom:0px;left:0px;width:100%;background:#FFF;padding:10px;height:120px;}
+        .donate{display:none;position:fixed;bottom:0px;left:0px;width:100%;background:#FFF;padding:10px;min-height:180px;}
         .donate *{color:#000;font-size:13px;}
         .donate ul img{width:18px;height:18px;vertical-align:middle;margin:3px;margin-left:0;}
         .donate ul li span, .donate ul li a{color:#2c833f;}
@@ -194,9 +194,9 @@
         </style>
         <div id="donate" class="donate " onclick="event.stopPropagation();">
             <ul>
+                <li><img src="./images/wechat.svg" loading="lazy" alt="WeChat Pay">WeChat Pay: <img style="width:100px;height:100px;" src="./images/wechat_pay.png"></li>
                 <li><img src="./images/paypal.svg" loading="lazy" alt="Paypal" >Paypal: <span><a target="_blank" href="https://paypal.me/doublesun?locale.x=zh_XC">paypal.me/doublesun</a></span></li>
                 <li><img src="./images/alipay.svg" loading="lazy" alt="AliPay">Alipay: <span>cjyf<b style="display:none;">web authenticator</b>-yqp@126.com</span></li>
-                <!--<li><img src="./images/wechat.svg" loading="lazy" alt="WeChat Pay"></li>-->
             </ul>
             <div class="donate-close"><a id="donate-close-btn" href="javascript:void(0);">Close</a></div>
         </div>
