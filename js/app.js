@@ -26,7 +26,7 @@ var UIInterface = {
     },
     backup: function (){
         this._callFuncCatchError(function(){
-            var encryptNeeded = false, fileName = formatDate('TOTP_Authenticator_backup_%Y%m%d%H%M%S.totp');
+            var encryptNeeded = false, fileName = formatDate('Web_Authenticator_backup_%Y%m%d%H%M%S.totp');
             if (confirm('Do you want to encrypt content backuped?')) {
                 encryptNeeded = true;
             }
