@@ -2,7 +2,7 @@
  * https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers
  */
  
-var CACHE_NAME = 'gauthn-cache-v1';
+var CACHE_NAME = 'webauthy-cache-v1';
 var INITIAL_RESOURCES_TO_CACHE = [
     '/',
     '/index.html',
@@ -12,6 +12,8 @@ var INITIAL_RESOURCES_TO_CACHE = [
     '/css/zh-cn.css',
     '/images/alipay.svg',
     '/images/paypal.svg',
+    '/images/wechat.svg',
+    '/images/wechat_pay.png',
     '/js/ItemsManager.js',
     '/js/jsQR.min.js',
     '/js/jsTOTP-es5.min.js',
