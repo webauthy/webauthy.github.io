@@ -14,6 +14,7 @@ var INITIAL_RESOURCES_TO_CACHE = [
     '/images/paypal.svg',
     '/images/wechat.svg',
     '/images/wechat_pay.png',
+    '/js/browserfingerprint.js',
     '/js/ItemsManager.js',
     '/js/jsQR.min.js',
     '/js/jsTOTP-es5.min.js',

@@ -3,13 +3,34 @@
     
     var ItemsStorage = {
         storageKey: 'OTPEntities', 
+        secret: null,
+        setSecret: function (){
+            if (!this.secret) {
+                var fingerprint = getBrowserFingerprint({loose: 1});
+                this.secret = fingerprint ? fingerprint.toString('16').substring(0,8) : null; // key length must be 4/6/8 for sjcl.aes
+            }
+        },
         store: function (obj){
-            localforage.setItem(this.storageKey, obj); // https://localforage.github.io/localForage/
+            this.setSecret();
+            var storeData = this.secret ? encrypt(this.secret, obj) : obj;
+            localforage.setItem(this.storageKey, storeData); // https://localforage.github.io/localForage/
             return true;
         },
         restore: function (callback){
-            return localforage.getItem(this.storageKey, callback);
+            this.setSecret();
+            var self = this;
+            return localforage.getItem(this.storageKey, function (err, data){
+                if (err) {
+                    alert(err);
+                } else {
+                    if (data && typeof(data) == 'string' && self.secret) {
+                        data = decrypt(self.secret, data)
+                    }
+                    isFunction(callback) && callback(data);
+                }
+            });
         }
+        
     };
     
     var ItemsManager = {
@@ -119,19 +140,15 @@
         },
         loadFromStorage: function (callback){
             var OTPEntity, items = [], _self = this;
-            ItemsStorage.restore(function (err, data) {
-                if (err) {
-                    alert(err);
-                } else {
-                    if (data && isObject(data)) {
-                        for (var k in data) {
-                            OTPEntity = data[k];
-                            _self.showOTPCode(OTPEntity, false);
-                            items.push(OTPEntity);
-                        }
+            ItemsStorage.restore(function (data) {
+                if (data && isObject(data)) {
+                    for (var k in data) {
+                        OTPEntity = data[k];
+                        _self.showOTPCode(OTPEntity, false);
+                        items.push(OTPEntity);
                     }
-                    isFunction(callback) && callback(items);
                 }
+                isFunction(callback) && callback(items);
             });
         },
         
@@ -142,7 +159,7 @@
             if (isEmptyObj(list)) return;
             
             if (encrypting) {
-                var token = prompt("Please enter a password for encrypting, and do remember it.", "");
+                var token = prompt("Please enter a password for encrypting, and do remember it. The password will be used to decrypt the content on restoring.", "");
                 if (!token) return;
                 data.data = encrypt(token, list);
                 data.encrypted = true;
