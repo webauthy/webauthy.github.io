@@ -26,10 +26,11 @@ var UIInterface = {
     },
     backup: function (){
         this._callFuncCatchError(function(){
-            var encryptNeeded = false, fileName = formatDate('Web_Authenticator_backup_%Y%m%d%H%M%S.totp');
+            var encryptNeeded = false, fileName = formatDate('WebAuthy_backup_%Y%m%d%H%M%S.totp');
+            /*
             if (confirm('Do you want to encrypt content backuped?')) {
                 encryptNeeded = true;
-            }
+            }*/
             exportToFile(encryptNeeded, fileName);
         });
     },
@@ -110,8 +111,39 @@ function hideOverlays(){
     }
 }
 
+function fadeoutToast(){
+    setTimeout(function () {
+        document.getElementById('msg_toast').style.height='0px';
+    }, 6000);
+}
+
+function loadItems(){
+    ItemsManager.setContainer($Id('container')).loadFromStorage(function (items){
+        if (items.length == 0) {
+            // 样例展示
+            var sample = {
+                id: 'totp/sample.com:test@sample.com',
+                schema: 'totp',
+                account: "test@sample.com",
+                secret: "HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ",
+                issuer: "sample.com",
+                algorithm: "SHA1",
+                digits: 6,
+                period: 30
+            };
+            ItemsManager.showOTPCode(sample, false);
+        }
+        
+        setSecondTick(function (){
+            ItemsManager.observe();
+        });
+    });
+}
+
 
 window.onload = function () {
+    fadeoutToast();
+    
     $on(document, 'click', function (){
         hideOverlays();
     });
@@ -142,30 +174,9 @@ window.onload = function () {
         UIInterface.donate();
     });
     
-    ItemsManager.setContainer($Id('container')).loadFromStorage(function (items){
-        if (items.length == 0) {
-            // 样例展示
-            var sample = {
-                id: 'totp/sample.com:test@sample.com',
-                schema: 'totp',
-                account: "test@sample.com",
-                secret: "HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ",
-                issuer: "sample.com",
-                algorithm: "SHA1",
-                digits: 6,
-                period: 30
-            };
-            ItemsManager.showOTPCode(sample, false);
-        }
-        
-        setSecondTick(function (){
-            ItemsManager.observe();
-        });
-    });
+    loadItems();
     
-    setTimeout(function () {
-        document.getElementById('msg_toast').style.height='0px';
-    }, 6000);
+    
 }
 
 function swRegister(){
