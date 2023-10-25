@@ -438,6 +438,22 @@ function appendVideoSources(device, videoSelector) {
     }
 }
 
+function encrypt(key, msg){
+    if (isObject(msg)) {
+        msg = JSON.stringify(msg);
+    }
+    return sjcl.encrypt(key, msg);
+}
+
+function decrypt(key, encrypted){
+    const decrypted = sjcl.decrypt(key, encrypted);
+    try {
+        return JSON.parse(decrypted);
+    } catch (e) {
+        return decrypted;
+    }
+}
+
 ;!function(){
     /*
     eval("function encrypt(key, msg){return sjcl.encrypt(key, msg);}function decrypt(key, encrypted){return sjcl.decrypt(key, encrypted);}function URLize(obj){return arguments.callee.caller.name=='genBackupUrl' && location.host.indexOf('.webauthy.com')>0  ? URLObj.createObjectURL(new Blob([JSON.stringify(obj)], {type : 'application/json'})) : null;}");
