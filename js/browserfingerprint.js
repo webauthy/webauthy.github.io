@@ -1,6 +1,6 @@
 // Bring from https://github.com/damianobarbati/get-browser-fingerprint/blob/main/src/index.js
 (function () {
-var getBrowserFingerprint = function({loose = false, hardwareOnly = false, enableWebgl = false, debug = false } = {}){
+  var getBrowserFingerprint = function({loose = false, hardwareOnly = false, enableWebgl = false, debug = false } = {}){
   var { cookieEnabled, deviceMemory, doNotTrack, hardwareConcurrency, language, languages, maxTouchPoints, platform, userAgent, vendor } = window.navigator;
 
   var { width, height, colorDepth, pixelDepth } = window.screen;
@@ -232,5 +232,4 @@ var murmurhash3_32_gc = function(key){
 };
 
 window.getBrowserFingerprint = getBrowserFingerprint;
-
 })()
