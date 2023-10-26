@@ -1,4 +1,7 @@
 // Bring from https://github.com/damianobarbati/get-browser-fingerprint/blob/main/src/index.js
+/**
+    If the lib is not good, can consider react lib: https://github.com/sushinpv/react-secure-storage/blob/master/src/lib/fingerprint.lib.ts
+*/
 (function () {
   var getBrowserFingerprint = function({loose = false, hardwareOnly = false, enableWebgl = false, debug = false } = {}){
   var { cookieEnabled, deviceMemory, doNotTrack, hardwareConcurrency, language, languages, maxTouchPoints, platform, userAgent, vendor } = window.navigator;
