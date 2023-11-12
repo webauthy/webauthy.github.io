@@ -49,7 +49,7 @@
     '; //并没有用到template
     UIItem.prototype._renderData = function (){
         this.fragment.querySelector('.code').innerHTML = this.formatCode(this.data.code);
-        this.fragment.querySelector('.issuer').innerHTML = '<b>{{issuer}}</b>&nbsp;&nbsp;({{account}})'.replace(/\{\{account\}\}/, this.data.account).replace(/\{\{issuer\}\}/, this.data.issuer);
+        this.fragment.querySelector('.issuer').innerHTML = '<b>{{issuer}}</b>&nbsp;&nbsp;( {{account}} )'.replace(/\{\{account\}\}/, this.data.account).replace(/\{\{issuer\}\}/, this.data.issuer);
         return this;
     };
     UIItem.prototype.remove = function (){
