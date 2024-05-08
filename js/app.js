@@ -24,6 +24,11 @@ var UIInterface = {
             }
         });
     },
+    toggleVisible: function (id) {
+        this._callFuncCatchError(function(){
+            ItemsManager.toggleVisible(id);
+        });
+    },
     backup: function (){
         this._callFuncCatchError(function(){
             var encryptNeeded = false, fileName = formatDate('WebAuthy_backup_%Y%m%d%H%M%S.totp');
@@ -59,6 +64,10 @@ var UIInterface = {
 
 function removeItem(id){
     UIInterface.removeItem(id);
+}
+
+function toggleVisible(id){
+    UIInterface.toggleVisible(id);
 }
 
 function onDecodeComplete(content, callback){

@@ -99,7 +99,14 @@
         .bar-slot .bar{height:4px;background:#2c833f;border:none;margin:0px;}
         
         .flash-border{-moz-animation: flash 300ms ease-out 600ms 7 alternate; -webkit-animation: flash 300ms ease-out 600ms 7 alternate; animation: flash 300ms ease-out 600ms/*delay*/ 7/*count*/ alternate;}
-        .del-btn{position:absolute;z-index:1;right:0px;top:-8px;display:block;text-align:center;width:33px;height:53px;line-height:53px;font-size:28px;color:#C60000;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23A42034' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'%3E%3Cpath d='M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6'/%3E%3C/svg%3E") no-repeat;background-position: center;}/*icons from https://feathericons.com/?query=trash*/
+        
+        .btn{position:absolute;z-index:1;top:-8px;display:block;text-align:center;width:30px;height:53px;line-height:53px;font-size:28px;background-position: center;background-repeat: no-repeat;}
+        .del-btn{right:0px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23A42034' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'%3E%3Cpath d='M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6'/%3E%3C/svg%3E")}/*icons from https://feathericons.com/?query=trash*/
+        .eye-btn{right:30px;}
+        .eye-on{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-eye'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'%3E%3C/path%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3C/svg%3E")}
+        .eye-off{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-eye-off'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24'%3E%3C/path%3E%3Cline x1='1' y1='1' x2='23' y2='23'%3E%3C/line%3E%3C/svg%3E");}
+        
+        .mosaic{color:transparent!important;text-shadow:0 0 9px rgba(53,212,199,1)}/*字体马赛克*/
         
         /*动画*/
         @keyframes growing{

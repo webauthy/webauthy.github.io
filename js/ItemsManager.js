@@ -125,6 +125,12 @@
             }
         },
         
+        toggleVisible: function (id){
+            if (id in this.OTPEntities) {
+                this.getUIItem(id).toggleVisible();
+            }
+        },
+        
         has: function (id){
             return id in this.OTPEntities;
         },

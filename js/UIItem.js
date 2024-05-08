@@ -24,7 +24,7 @@
         this.fragment.appendChild(rootEle);
         var ele = document.createElement('div');
         ele.className = 'item';
-        ele.innerHTML = '<div class="code"></div><div class="issuer"></div><a href="javascript:removeItem(\''+this.id+'\');" class="del-btn"></a>';
+        ele.innerHTML = '<div class="code"></div><div class="issuer"></div><a class="btn eye-btn eye-off" href="javascript:toggleVisible(\''+this.id+'\');"></a><a href="javascript:removeItem(\''+this.id+'\');" class="btn del-btn"></a>';
         rootEle.appendChild(ele);
         ele = null;
         ele = document.createElement('div');
@@ -44,7 +44,7 @@
         return fragment;
     };
     UIItem.prototype.template = '\
-        <div class="item"><div class="code">{{code}}</div><div class="issuer"><b>{{account}}</b> ({{issuer}})</div><a class="del-btn"></a></div>\
+        <div class="item"><div class="code">{{code}}</div><div class="issuer"><b>{{account}}</b> ({{issuer}})</div><a class="btn del-btn"></a></div>\
         <div class="bar-slot"><div class="bar" style="-moz-animation:growing {{rest}}s;-webkit-animation:growing {{rest}}s;animation:growing {{rest}}s;"></div></div>\
     '; //并没有用到template
     UIItem.prototype._renderData = function (){
@@ -55,6 +55,12 @@
     UIItem.prototype.remove = function (){
         this.container.removeChild($Id(this.id));
         return this;
+    };
+    UIItem.prototype.toggleVisible = function (){
+        this.rootEle.querySelector('.code').classList.toggle('mosaic');
+        var eyeBtn = this.rootEle.querySelector('.eye-btn');
+        eyeBtn.classList.toggle('eye-on');
+        eyeBtn.classList.toggle('eye-off');
     };
     UIItem.prototype.counterChanged = function (){
         var counter = this.data.counter;
