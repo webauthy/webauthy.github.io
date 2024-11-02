@@ -5,11 +5,12 @@
     "description": "Web Authenticator is a web-based free, across platforms and open-source authenticator. It has these features: Compatible with Google Authenticator(can use it instead of Google Authenticator); Backup authentication data; Scanning or reading local qr-code (QR code) image; Across platforms(can work on mobile, PC, Chrome, Safari, Firefox etc); Being Very safe(no any local data is transferred to server side); Not requiring additional sofware installation (If, you will, can also install it)",
     "scope": "/",
     "id":"/index.html",
-    "start_url": "/index.html",
-    "background_color": "#ffffff",
-    "theme_color": "#ffffff",
+    "start_url": "/index.html?standalone=true",
+    "background_color": "#1d3e5c",
+    "theme_color": "#1d3e5c",
     "orientation": "any",
     "display": "standalone",
+	"display_override": ["fullscreen", "window-controls-overlay"],
     "icons": [
         {
             "src": "/icons/icon192.png",
@@ -62,7 +63,6 @@
     ],
     "protocol_handlers": [
     ],
-    "display_override": ["window-controls-overlay"],
     "shortcuts" : [
         {
           "name": "Web Authenticator",
