@@ -67,7 +67,7 @@
         {
           "name": "Web Authenticator",
           "url": "/",
-          "description": "",
+          "description": "Web Authenticator is a web-based free, across platforms and open-source authenticator.",
           "icons": [{ "src": "/icons/icon192.png", "sizes": "192x192" }]
         }
     ],
