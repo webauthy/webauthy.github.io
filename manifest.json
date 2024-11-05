@@ -10,7 +10,7 @@
     "theme_color": "#1d3e5c",
     "orientation": "any",
     "display": "fullscreen",
-	"display_override": ["standalone", "window-controls-overlay"],
+    "_display_override": ["standalone", "window-controls-overlay"],
     "icons": [
         {
             "src": "/icons/icon192.png",
