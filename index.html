@@ -49,6 +49,11 @@
         .footer a:visited{color:#1979CA;}
         .footer a:hover{color:#1979CA;}
         .footer a:active{color:#1979CA;}
+        
+        @media (display-mode: standalone), (display-mode: fullscreen) {
+            *{user-select: none/*禁止文本被选择*/;}
+            body{overscroll-behavior-y: contain/*禁止移动端下拉刷新*/;}
+        }
         </style>
         <script>
         var debugMode = true;
