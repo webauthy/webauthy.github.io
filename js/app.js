@@ -29,6 +29,19 @@ var UIInterface = {
             ItemsManager.toggleVisible(id);
         });
     },
+    shareAsQRcode: function (id) {
+        this._callFuncCatchError(function(){
+            var otp = ItemsManager.getOTPObj(id);
+            var label = otp.issuer + ' (' + otp.account + ')';
+            if (!otp.raw) {
+            //otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30
+                var encodedIssuer = encodeURIComponent(otp.issuer);
+                var encodedAccount = encodeURIComponent(otp.account);
+                otp.raw = 'otpauth://'+otp.schema+'/' + encodedIssuer + ':' + encodedAccount + '?secret=' + otp.secret + '&issuer=' + encodedIssuer + '&algorithm=' + otp.algorithm + '&digits=' + otp.digits + '&period=' + otp.period;
+            }
+            QRCodeDialog.show(otp.raw, label);
+        });
+    },
     backup: function (){
         this._callFuncCatchError(function(){
             var encryptNeeded = false, fileName = formatDate('WebAuthy_backup_%Y%m%d%H%M%S.totp');
@@ -68,6 +81,10 @@ function removeItem(id){
 
 function toggleVisible(id){
     UIInterface.toggleVisible(id);
+}
+
+function shareAsQRcode(id){
+    UIInterface.shareAsQRcode(id);
 }
 
 function onDecodeComplete(content, callback){
@@ -131,6 +148,7 @@ function loadItems(){
         if (items.length == 0) {
             // 样例展示
             var sample = {
+                raw: 'otpauth://totp/totp.sample.com:test@sample.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=sample.com',
                 id: 'totp/sample.com:test@sample.com',
                 schema: 'totp',
                 account: "test@sample.com",

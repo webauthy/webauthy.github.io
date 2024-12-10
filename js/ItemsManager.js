@@ -89,6 +89,10 @@
             item.attach(this.containerEle);
         },
         
+        getOTPObj: function (id) {
+            return this._getOTPEntity(id);
+        },
+        
         //询问是否要更新
         observe: function (){
             for (var id in this.UIItems) {

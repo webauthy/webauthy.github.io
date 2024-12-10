@@ -14,7 +14,7 @@
         <link rel="shortcut icon" href="icons/icon48.png" />
         <link rel="manifest" href="manifest.json">
         <style>
-        *{margin:0px;padding:0px;border:none;border-radius:0px;color:#fff;}
+        body, div, ul, li, a, p{margin:0px;padding:0px;border:none;border-radius:0px;color:#fff;}
         img{outline:none;}
         body{background:#112435;}
         ul{list-style:none;}
@@ -99,6 +99,15 @@
             </div>
         </div>
         <style>
+        #qrcode-dialog{padding:50px;padding-bottom:20px;margin-top:15px;border:none;border-radius:5px;}
+        #qrcode-dialog p{color:#003153;font-size:13px;text-align:center;margin-top:20px;max-width:150px;word-wrap:break-word;}
+        #qrcode-dialog::backdrop {background-color: rgba(255, 255, 255, 0.5);}
+        </style>
+        <dialog id="qrcode-dialog">
+            <div id="qrcode-canvas"></div>
+            <p></p>
+        </dialog>
+        <style>
         .row{margin:0px;margin-top:15px;background:#003153;padding:0px;padding-top:8px;text-align:left;width:100%;/*box-sizing: border-box;*/}
         .warning-border{box-shadow: 0 0 1px rgba(198,0,0,.7), inset 0 0 15px 2px rgba(198,0,0,.7);}
         
@@ -115,6 +124,7 @@
         .eye-btn{right:30px;}
         .eye-on{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C0C0C0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-eye'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'%3E%3C/path%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3C/svg%3E")}
         .eye-off{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C0C0C0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' class='feather feather-eye-off'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24'%3E%3C/path%3E%3Cline x1='1' y1='1' x2='23' y2='23'%3E%3C/line%3E%3C/svg%3E");}
+        .qrcode-sharing{right:61px;background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.5 6.5H6.51M17.5 6.5H17.51M6.5 17.5H6.51M13 13H13.01M17.5 17.5H17.51M17 21H21V17M14 16.5V21M21 14H16.5M15.6 10H19.4C19.9601 10 20.2401 10 20.454 9.89101C20.6422 9.79513 20.7951 9.64215 20.891 9.45399C21 9.24008 21 8.96005 21 8.4V4.6C21 4.03995 21 3.75992 20.891 3.54601C20.7951 3.35785 20.6422 3.20487 20.454 3.10899C20.2401 3 19.9601 3 19.4 3H15.6C15.0399 3 14.7599 3 14.546 3.10899C14.3578 3.20487 14.2049 3.35785 14.109 3.54601C14 3.75992 14 4.03995 14 4.6V8.4C14 8.96005 14 9.24008 14.109 9.45399C14.2049 9.64215 14.3578 9.79513 14.546 9.89101C14.7599 10 15.0399 10 15.6 10ZM4.6 10H8.4C8.96005 10 9.24008 10 9.45399 9.89101C9.64215 9.79513 9.79513 9.64215 9.89101 9.45399C10 9.24008 10 8.96005 10 8.4V4.6C10 4.03995 10 3.75992 9.89101 3.54601C9.79513 3.35785 9.64215 3.20487 9.45399 3.10899C9.24008 3 8.96005 3 8.4 3H4.6C4.03995 3 3.75992 3 3.54601 3.10899C3.35785 3.20487 3.20487 3.35785 3.10899 3.54601C3 3.75992 3 4.03995 3 4.6V8.4C3 8.96005 3 9.24008 3.10899 9.45399C3.20487 9.64215 3.35785 9.79513 3.54601 9.89101C3.75992 10 4.03995 10 4.6 10ZM4.6 21H8.4C8.96005 21 9.24008 21 9.45399 20.891C9.64215 20.7951 9.79513 20.6422 9.89101 20.454C10 20.2401 10 19.9601 10 19.4V15.6C10 15.0399 10 14.7599 9.89101 14.546C9.79513 14.3578 9.64215 14.2049 9.45399 14.109C9.24008 14 8.96005 14 8.4 14H4.6C4.03995 14 3.75992 14 3.54601 14.109C3.35785 14.2049 3.20487 14.3578 3.10899 14.546C3 14.7599 3 15.0399 3 15.6V19.4C3 19.9601 3 20.2401 3.10899 20.454C3.20487 20.6422 3.35785 20.7951 3.54601 20.891C3.75992 21 4.03995 21 4.6 21Z' stroke='%23C0C0C0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");}
         
         .mosaic{color:transparent!important;text-shadow:0 0 9px rgba(53,212,199,1)}/*字体马赛克*/
         
@@ -217,5 +227,33 @@
         <script src="js/UIItem.js" defer></script>
         <script src="js/ItemsManager.js" defer></script>
         <script src="js/app.js" defer></script>
+        <script src="js/qrcode.min.js"></script> <!-- A lib to generate QRCode image -->
+        <script>
+        var QRCodeDialog = {
+            el: document.getElementById('qrcode-dialog'),
+            qrcodeGenerator: new QRCode(document.getElementById('qrcode-canvas'), {
+                width: 150,
+                height: 150,
+                colorDark : "#000000", // 003153
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            }),
+            show: function (uri, label) {
+                uri = uri || '';
+                if (testOtpAuthUri(uri)){
+                    this.qrcodeGenerator.clear();
+                    this.qrcodeGenerator.makeCode(uri);
+                    this.el.querySelector('p').innerText = label || '';
+                    this.el.showModal();
+                }
+            },
+            close: function (){
+                this.el.close();
+            }
+        }
+        document.body.addEventListener('click', function (){
+            QRCodeDialog.close();
+        });
+        </script>
     </body>
 </html>

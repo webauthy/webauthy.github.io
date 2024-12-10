@@ -200,6 +200,7 @@ function parseOtpAuthUri(uri){
     var pathParts = uriObj['pathname'].split('/');
     var len = pathParts.length;
     var OTPEntity = {
+        //'raw': uri,
         'schema': pathParts[len-2].toLowerCase(), //totp
         'account': decodeURIComponent(pathParts[len-1].indexOf(':') > 0 ? pathParts[len-1].split(':')[1].replace(/^\s+?|\s+?$/g, '') : pathParts[len-1]),
         'secret': uriObj['searchParams'].get('secret').toUpperCase(), // Secret is encoded in base32.
