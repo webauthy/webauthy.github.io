@@ -19,6 +19,7 @@ var INITIAL_RESOURCES_TO_CACHE = [
     '/js/jsQR.min.js',
     '/js/jsTOTP-es5.min.js',
     '/js/llqrcode.min.js',
+    '/js/qrcode.min.js',
     '/js/localforage.min.js',
     '/js/scanner.js',
     '/js/sjcl.js',
