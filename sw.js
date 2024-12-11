@@ -2,7 +2,7 @@
  * https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers
  */
  
-var CACHE_NAME = 'webauthy-cache-v1';
+var CACHE_NAME = 'webauthy-cache-v2';
 var INITIAL_RESOURCES_TO_CACHE = [
     '/',
     '/index.html',
