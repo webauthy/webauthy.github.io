@@ -45,6 +45,14 @@ function $html(innerhtml, appendTo) {
     return item.children[0];
 }
 
+function isZhCN() {
+  return navigator.language === 'zh-CN';
+}
+
+function $t(key) {
+  return lang[isZhCN() ? 'zh' : 'en'][key] || key;
+}
+
 function echo(msg, $alert){
     if ($alert) {
         alert(msg);
@@ -334,15 +342,23 @@ function readFile(file, readAs, callback){
 
 function decodeLocalImage(callback){
     try {
-        openFileDlg(function (content){ // content is dataURL
-            qrcode.callback = function (imgContent) { // imageContent is text of qrcode.
-                if (imgContent instanceof Error) {
-                    tryCozmoDecoder(content, callback, function (){alert('QRCode decoding failed!');});
-                } else {
-                    isFunction(callback) && callback.apply(null, [imgContent]);
-                }
-            }
-            qrcode.decode(content);
+        openFileDlg(async function (content){ // content is dataURL
+            const img = new Image();
+            img.src = content;
+            await img.decode();
+
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) throw new Error('Canvas 2D context is unavailable');
+
+            ctx.drawImage(img, 0, 0);
+            const decoded = qr.decodeQR(
+                ctx.getImageData(0, 0, canvas.width, canvas.height)
+            );
+            onDecodeComplete(decoded, callback);
         });
     } catch (e){
         alert(JSON.stringify(e));
@@ -369,7 +385,7 @@ function cozmoDecoder(dataURL, onDecodeSuccess, onError){
         img = null;
         var code = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts: "dontInvert"});
         if (code) {
-            isFunction(onDecodeSuccess) && onDecodeSuccess.apply(null, [code.data]); // code data is text of qrcode.
+            isFunction(onDecodeSuccess) && onDecodeSuccess.apply(null, [code.data]);
         } else {
             isFunction(onError) && onError();
         }

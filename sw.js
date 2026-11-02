@@ -16,15 +16,14 @@ var INITIAL_RESOURCES_TO_CACHE = [
     '/images/wechat_pay.png',
     '/js/browserfingerprint.js',
     '/js/ItemsManager.js',
-    '/js/jsQR.min.js',
     '/js/jsTOTP-es5.min.js',
-    '/js/llqrcode.min.js',
-    '/js/qrcode.min.js',
+    '/js/lang.js',
     '/js/localforage.min.js',
     '/js/scanner.js',
     '/js/sjcl.js',
     '/js/tools.js',
     '/js/UIItem.js',
+    '/js/paulmillr-qr/qr.min.js',
     '/js/app.js'
 ];
 

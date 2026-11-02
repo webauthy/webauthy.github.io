@@ -23,7 +23,7 @@
         
         .main{width:100%;height:100%;}
 
-        .toolbar{background:#1d3e5c;width:100%;height:40px;line-height:40px;color:#fff;clear:both;}
+        .toolbar{background:#1d3e5c;width:100%;height:52px;line-height:52px;color:#fff;clear:both;}
         
         .toolbar a{display:inline-block;text-align:center;color:#fff;height:25px;line-height:25px;border-radius:5px;text-decoration:none;}
         .toolbar a:link{color:#fff;}
@@ -44,8 +44,15 @@
         
         .toolbar .save-btn{border:1px solid #0072f5;box-shadow:0 0 3px #0072f5;padding-left:5px;padding-right:5px;margin-right:10px;}
         .toolbar .save-btn i:before{content:"+";font-size:18px;font-style:normal;font-weight:bold;}
+        .toolbar #scan-btn{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;width:36px;height:36px;box-sizing:border-box;padding:0;margin-right:10px;border:0;border-radius:50%;background:#0072f5;transition:background-color .15s ease;}
+        .toolbar #scan-btn i:before{content:"+";font-size:30px;font-style:normal;font-weight:600;line-height:1;color:#fff;}
+        .toolbar #scan-btn span{display:none!important;}
+        .toolbar #scan-btn:hover{background:#1680ff;}
+        .toolbar #scan-btn:active{background:#0063d8;}
+        .toolbar #scan-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+        @media (prefers-reduced-motion: reduce){.toolbar #scan-btn{transition:none;}}
         
-        .more-menu{position:absolute;display:none;z-index:100;background:#1d3e5c;border:1px solid #113f68;border-top:none;right:0px;top:40px;}
+        .more-menu{position:absolute;display:none;z-index:100;background:#1d3e5c;border:1px solid #113f68;border-top:none;right:0px;top:52px;}
         .more-menu li{display:block;padding:2px 5px;width:70px;height:25px;line-height:25px;}
         .more-menu li:hover{background:#0261bb;}
         .more-menu li:not(:last-child){border-bottom:1px solid #113f68;}
@@ -82,8 +89,8 @@
         <div class="main">
             <div class="toolbar">
                 <div style="float:left;margin-left:8px;">
-                    <a id="scan-btn" class="save-btn" href="javascript:void(0);"><i></i><span class="zh-cn">扫描二维码</span><span class="en-us">Add from scanning</span></a>
-                    <a id="pickImage-btn" class="save-btn" href="javascript:void(0);"><i></i><span class="zh-cn">选择二维码图片</span><span class="en-us">Add from QR code image</span></a>
+                    <a id="scan-btn" class="save-btn" href="javascript:void(0);" role="button" aria-label="Add account by scanning a QR code" title="Add account by scanning a QR code"><i aria-hidden="true"></i>
+                    </a>
                 </div>
                 <div style="float:right;margin-right:8px;position:relative;z-index:102;">
                     <a id="more-btn" class="more-btn" href="javascript:void(0);"><span class="more-btn-dots"></span></a>
@@ -113,7 +120,9 @@
         #qrcode-dialog::backdrop {background-color: rgba(255, 255, 255, 0.5);}
         </style>
         <dialog id="qrcode-dialog">
-            <div id="qrcode-canvas"></div>
+            <div id="qrcode-canvas-container" style="width:150px;height:150px;margin:0 auto;">
+                <canvas id="qrcode-canvas" width="150" height="150"></canvas>
+            </div>
             <p></p>
         </dialog>
         <style>
@@ -166,17 +175,18 @@
             .mask-layer{display:none;position:fixed;top:0px;left:0px;width:100%;height:100%;z-index:998;opacity:.3;background:#fff;}
             .scanner{display:none;z-index:999;position:fixed;top:0px;left:0px;width:100%;height:100%;}
             .scanner .camera-box{box-sizing:border-box;width:250px;height:250px;border:5px solid #20202f;background:#000;margin:0 auto;margin-top:50px;opacity:1;position:relative;}
-            
             .scanner .scanningline{position:absolute;height:3px;width:260px;top:0px;left:-10px;background:#F00;box-shadow:0 0 3px #ff2626;-moz-animation:scanning linear 2s infinite alternate;-webkit-animation:scanning linear 2s infinite alternate;animation:scanning linear 2s infinite alternate;}
-            
             .scanner canvas{width:100%;height:100%;}
-            
-            .scanner .camera-options{width:260px;margin:0px auto;}
-            
-            .scanner .video-select{width:260px;margin:0px auto;margin-top:20px;}
-            
-            .scanner .close-btn{width:30px;height:30px;margin:auto;margin-top:50px;}
-            
+            .scanner .camera-options{width:250px;margin:0px auto;padding:5px;box-sizing: border-box;}
+            .scanner .camera-options>div{margin-top:5px;}
+            .scanner .video-select{width:250px;margin:0px auto;margin-top:20px;}
+            .scanner .add-btn i:before{content:"+";font-size:18px;font-style:normal;font-weight:bold;}
+            .scanner .add-btn{padding-left:5px;padding-right:5px;margin-right:10px;text-decoration:none;}
+            .scanner .add-btn:link{color:#fff;text-decoration:none;}
+            .scanner .add-btn:visited{color:#fff;text-decoration:none;}
+            .scanner .add-btn:hover{color:#fff;text-decoration:none;}
+            .scanner .add-btn:active{color:#fff;text-decoration:none;}
+            .scanner .close-btn{width:30px;height:30px;margin:auto;margin-top:30px;}
             .scanner .close-btn a{display:block;text-align:center;border:none;border-radius:50%;background: #000;width: 40px;height: 40px;line-height: 40px;font-size: 25px;text-decoration:none;}
             .scanner .close-btn a:link{color:#fff;}
             .scanner .close-btn a:visited{color:#fff;}
@@ -191,9 +201,31 @@
         <div id="mask-layer" class="mask-layer "></div>
         <div id="scanner" class="scanner " onclick="event.stopPropagation();">
             
-            <div class="camera-box">
+            <div id="camera-scanner" class="camera-box">
                 <div id="scanningline" class="scanningline"></div>
                 <canvas id="qr-canvas"></canvas>
+            </div>
+            <div class="camera-options" style="background-color:black;text-align:center;">
+                <div id="scanner-ok-msg">
+                    <div>
+                        <span class="zh-cn">请扫描二维码</span>
+                        <span class="en-us">Please scan the QR code</span>
+                    </div>
+                    <div>
+                        <span class="zh-cn">或</span>
+                        <span class="en-us">Or</span>
+                    </div>
+                </div>
+                <div id="scanner-not-support-msg" style="font-size:0.8em;display:none;">
+                    <span class="zh-cn">您的浏览器不支持后置摄像头，无法扫描二维码，您可以选择本地二维码图片添加账户&#x2193;</span>
+                    <span class="en-us">Your browser does not support the rear camera, cannot scan QR code, you can select local QR image to add account&#x2193;</span>
+                </div>
+                <div>
+                    <a id="pickImage-btn" class="add-btn" href="javascript:void(0);"><i></i>
+                    <span class="zh-cn">选择本地二维码图片</span>
+                    <span class="en-us">Load from local QR image</span>
+                    </a>
+                </div>
             </div>
             <div class="camera-options">
                 <!--<div class="video-select"><form><select id="videoSources" style="width:200px;height:30px;"></select></form></div>-->
@@ -222,22 +254,104 @@
         <style>
         .alert{padding:0px;text-align:center;position:fixed;z-index:100;width:100%;height:40px;line-height: 40px;opacity: 0.8;margin:0 auto;bottom:0px;background:#1d3e5c; -webkit-transition: height 1s .2s;-moz-transition: height 1s .2s;-ms-transition: height 1s .2s;-o-transition: height 1s .2s;transition: height 1s .2s;}
         .alert span{display:inline-block;text-align:padding:0px;center;cursor:pointer;margin-left:5px;width:18px;height:18px;line-height:18px;border-radius:50%;background:#FFF;color:#112435;font-size:14px;font-weight:bold;}
+        .toast{position:fixed;z-index:1100;top:calc(16px + env(safe-area-inset-top));left:50%;display:flex;align-items:center;gap:12px;max-width:calc(100% - 32px);padding:11px 14px;box-sizing:border-box;background:#1d3e5c;border:1px solid #0072f5;border-radius:6px;box-shadow:0 3px 12px rgba(0,0,0,.35);color:#fff;font-size:14px;line-height:1.4;opacity:0;pointer-events:none;transform:translate(-50%,-8px);transition:opacity .18s ease,transform .18s ease;}
+        .toast.visible{opacity:1;pointer-events:auto;transform:translate(-50%,0);}
+        .toast[hidden]{display:none;}
+        .toast-message{overflow-wrap:anywhere;}
+        .toast-close{flex:none;padding:0 2px;border:0;background:transparent;color:#fff;font-size:20px;line-height:1;cursor:pointer;}
+        @media (prefers-reduced-motion: reduce){.toast{transition:none;}}
         </style>
         <div id="msg_toast" class="alert">
             Please confirm your client time is correct. <span onclick="document.getElementById('msg_toast').style.height='0px';"><!--&#x2716;-->&#10006;</span>
         </div>
+        <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+            <span id="toast-message" class="toast-message"></span>
+            <button id="toast-close" class="toast-close" type="button" aria-label="Close notification">&times;</button>
+        </div>
+        <script>
+        (function (){
+            var toast = document.getElementById('toast');
+            var message = document.getElementById('toast-message');
+            var timer = null;
+            var hideTimer = null;
+            function hideToast(){
+                clearTimeout(timer);
+                clearTimeout(hideTimer);
+                timer = null;
+                toast.classList.remove('visible');
+                hideTimer = setTimeout(function (){
+                    toast.hidden = true;
+                }, 180);
+            }
+            window.showToast = function (text, duration){
+                clearTimeout(timer);
+                clearTimeout(hideTimer);
+                message.textContent = text == null ? '' : String(text);
+                toast.hidden = false;
+                toast.classList.remove('visible');
+                var show = function (){
+                    if (toast.hidden) return;
+                    toast.classList.add('visible');
+                };
+                if (typeof window.requestAnimationFrame === 'function') {
+                    window.requestAnimationFrame(show);
+                } else {
+                    setTimeout(show, 0);
+                }
+                if (duration !== 0) {
+                    timer = setTimeout(hideToast, typeof duration === 'number' && duration > 0 ? duration : 2600);
+                }
+            };
+            document.getElementById('toast-close').addEventListener('click', hideToast);
+        })();
+        </script>
+        <script src="js/lang.js" defer></script>
         <script src="js/browserfingerprint.js" defer></script>
         <script src="js/sjcl.js" defer></script><!-- encrypt/decrypt -->
         <script src="js/jsTOTP-es5.min.js" defer></script><!-- TOTP generator -->
-        <script src="js/llqrcode.min.js" defer></script><!-- QRCode decoding libary merged from ./mergedjs/*.js-->
         <script src="js/localforage.min.js" defer></script> <!-- A local storage libary with a simple, localStorage-like API -->
         <script src="js/tools.js" defer></script>
         <script src="js/scanner.js" defer></script>
         <script src="js/UIItem.js" defer></script>
         <script src="js/ItemsManager.js" defer></script>
         <script src="js/app.js" defer></script>
-        <script src="js/qrcode.min.js"></script> <!-- A lib to generate QRCode image -->
+        <script src="js/paulmillr-qr/qr.min.js" defer></script> <!-- A lib to decode/encode QRcode -->
         <script>
+        function QRCode(canvas, options) {
+            this._canvas = canvas;
+            this._options = options || {};
+            this._options.ecc = this.constructor.CorrectLevel[this._options.correctLevel || 'M'];
+            canvas.style.width = (this._options.width || canvas.width) + 'px';
+            canvas.style.height = (this._options.height || canvas.height) + 'px';
+            canvas.style.imageRendering = 'pixelated';
+        }
+        QRCode.CorrectLevel = {L: 'low', M: 'medium', Q: 'quartile', H: 'high'};
+        QRCode.prototype.clear = function() {
+            var canvas = this._canvas;
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        };
+        QRCode.prototype.makeCode = function(text) {
+            var canvas = this._canvas;
+            var options = this._options;
+            var blob = qr.encodeQR(text, 'raw', Object.assign({}, options, {scale: 1})); // paulmillr-qr/qr.min.js
+            var size = blob.length;
+            canvas.width = size;
+            canvas.height = size;
+            var ctx = canvas.getContext('2d');
+            var imageData = ctx.createImageData(size, size);
+            for (var y = 0; y < size; y++) {
+                for (var x = 0; x < size; x++) {
+                    var offset = (y * size + x) * 4;
+                    var color = blob[y][x] ? 0 : 255;
+                    imageData.data[offset] = color;
+                    imageData.data[offset + 1] = color;
+                    imageData.data[offset + 2] = color;
+                    imageData.data[offset + 3] = 255;
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+        };  
         var QRCodeDialog = {
             el: document.getElementById('qrcode-dialog'),
             qrcodeGenerator: new QRCode(document.getElementById('qrcode-canvas'), {

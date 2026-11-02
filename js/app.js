@@ -88,10 +88,17 @@ function shareAsQRcode(id){
 }
 
 function onDecodeComplete(content, callback){
-    isFunction(callback) && callback(content);
-    if (!testOtpAuthUri(content)) return;
-    var uiitem = handleOtpAuthUrl(content);
-    if (uiitem) uiitem.flashBorder();
+    var isValid = testOtpAuthUri(content);
+    isFunction(callback) && callback(content, isValid);
+    if (!isValid) {
+        showToast($t('invalid_otpauth_url'));
+    } else {
+        var uiitem = handleOtpAuthUrl(content);
+        if (uiitem) {
+            showToast($t('item_added'));
+            uiitem.flashBorder();
+        }
+    }
 }
 //handleOtpAuthUrl('otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=10');
 function handleOtpAuthUrl(url){
@@ -178,7 +185,10 @@ window.onload = function () {
         Scanner.open();
     });
     $on('pickImage-btn', 'click', function (){
-        UIInterface.addByImage(function(content){
+        UIInterface.addByImage(function(content, isValid){
+            if (isValid) {
+                Scanner.close();
+            }
             //console.log(content);
         });
     });
