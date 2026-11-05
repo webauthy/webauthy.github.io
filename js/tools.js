@@ -259,7 +259,8 @@ function genTotpCode(options){
     return {
         code: code,
         counter: totp.counter,
-        rest: totp.rest
+        rest: totp.rest,
+        ts: totp.timestamp
     };
 }
 

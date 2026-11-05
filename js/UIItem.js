@@ -12,7 +12,8 @@
             period: options.period,
             rest: options.rest,
             digits: options.digits || 6,
-            counter: options.counter
+            counter: options.counter,
+            ts: options.ts
         };
         this._init()._renderData();
     }
@@ -24,7 +25,10 @@
         this.fragment.appendChild(rootEle);
         var ele = document.createElement('div');
         ele.className = 'item';
-        ele.innerHTML = '<div class="code"></div><div class="issuer"></div><a class="btn qrcode-sharing" href="javascript:shareAsQRcode(\''+this.id+'\');"></a><a class="btn eye-btn eye-off" href="javascript:toggleVisible(\''+this.id+'\');"></a><a href="javascript:removeItem(\''+this.id+'\');" class="btn del-btn"></a>';
+        ele.innerHTML = '<div class="code"></div><div class="issuer"></div>\
+        <a class="btn qrcode-sharing" href="javascript:shareAsQRcode(\''+this.id+'\');"></a>\
+        <a class="btn eye-btn eye-off" href="javascript:toggleVisible(\''+this.id+'\');"></a>\
+        <a href="javascript:removeItem(\''+this.id+'\');" class="btn del-btn"></a>';
         rootEle.appendChild(ele);
         ele = null;
         ele = document.createElement('div');
@@ -76,6 +80,7 @@
         this.data.rest = codeObj.rest;
         this.data.counter = codeObj.counter;
         this.data.code = codeObj.code;
+        this.data.ts = codeObj.ts;
         this.rootEle.querySelector('.code').innerHTML = this.formatCode(this.data.code);
         this.rootEle.querySelector('.bar-slot').innerHTML = '';
         this.rootEle.querySelector('.bar-slot').appendChild(this._buildAnimation(this.data.rest));

@@ -98,6 +98,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 				}
 				now = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Date().getTime();
 				this.rest = this.expiry - (Math.round(now / 1000.0) % this.expiry);
+				this.timestamp = now;
 				return otp;
 			}
 		}]);

@@ -72,7 +72,8 @@
                 digits: OTPEntity.digits,
                 rest: codeObj.rest,
                 code: codeObj.code,
-                counter: codeObj.counter
+                counter: codeObj.counter,
+                ts: codeObj.ts
             };
             var item = new UIItem(options);
             this._appendItem(item);
