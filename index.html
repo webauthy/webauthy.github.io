@@ -177,15 +177,16 @@
             .scanner .camera-box{box-sizing:border-box;width:250px;height:250px;border:5px solid #20202f;background:#000;margin:0 auto;margin-top:50px;opacity:1;position:relative;}
             .scanner .scanningline{position:absolute;height:3px;width:260px;top:0px;left:-10px;background:#F00;box-shadow:0 0 3px #ff2626;-moz-animation:scanning linear 2s infinite alternate;-webkit-animation:scanning linear 2s infinite alternate;animation:scanning linear 2s infinite alternate;}
             .scanner canvas{width:100%;height:100%;}
-            .scanner .camera-options{width:250px;margin:0px auto;padding:5px;box-sizing: border-box;}
+            .scanner .camera-options{width:250px;margin:0px auto;padding:15px;box-sizing: border-box;}
             .scanner .camera-options>div{margin-top:5px;}
+            .scanner .scanner-tips{font-size: 0.8em; display: block;line-height:20px;}
             .scanner .video-select{width:250px;margin:0px auto;margin-top:20px;}
             .scanner .add-btn i:before{content:"+";font-size:18px;font-style:normal;font-weight:bold;}
-            .scanner .add-btn{padding-left:5px;padding-right:5px;margin-right:10px;text-decoration:none;}
-            .scanner .add-btn:link{color:#fff;text-decoration:none;}
-            .scanner .add-btn:visited{color:#fff;text-decoration:none;}
-            .scanner .add-btn:hover{color:#fff;text-decoration:none;}
-            .scanner .add-btn:active{color:#fff;text-decoration:none;}
+            .scanner .add-btn{display:inline-block;padding:3px;margin-top:5px;text-decoration:none;border:1px solid #0072f5;border-radius:15px;}
+            .scanner .add-btn:link{color:#0072f5;text-decoration:none;}
+            .scanner .add-btn:visited{color:#0072f5;text-decoration:none;}
+            .scanner .add-btn:hover{color:#0072f5;text-decoration:none;}
+            .scanner .add-btn:active{color:#0072f5;text-decoration:none;}
             .scanner .close-btn{width:30px;height:30px;margin:auto;margin-top:30px;}
             .scanner .close-btn a{display:block;text-align:center;border:none;border-radius:50%;background: #000;width: 40px;height: 40px;line-height: 40px;font-size: 25px;text-decoration:none;}
             .scanner .close-btn a:link{color:#fff;}
@@ -206,17 +207,17 @@
                 <canvas id="qr-canvas"></canvas>
             </div>
             <div class="camera-options" style="background-color:black;text-align:center;">
-                <div id="scanner-ok-msg">
+                <div class="scanner-tips" id="scanner-ok-msg">
                     <div>
                         <span class="zh-cn">请扫描二维码</span>
                         <span class="en-us">Please scan the QR code</span>
                     </div>
                     <div>
-                        <span class="zh-cn">或</span>
-                        <span class="en-us">Or</span>
+                        <span class="zh-cn">或&#x2193;</span>
+                        <span class="en-us">Or&#x2193;</span>
                     </div>
                 </div>
-                <div id="scanner-not-support-msg" style="font-size:0.8em;display:none;">
+                <div class="scanner-tips" id="scanner-not-support-msg">
                     <span class="zh-cn">您的浏览器不支持后置摄像头，无法扫描二维码，您可以选择本地二维码图片添加账户&#x2193;</span>
                     <span class="en-us">Your browser does not support the rear camera, cannot scan QR code, you can select local QR image to add account&#x2193;</span>
                 </div>
