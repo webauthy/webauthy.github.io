@@ -12,8 +12,8 @@ var UIInterface = {
     addByImage: function (callback){
         this._callFuncCatchError(function () {
             var _self = this;
-            decodeLocalImage(function (content){
-                onDecodeComplete(content, callback);
+            decodeLocalImage(function onDecoded(decodedContent){
+                onDecodeComplete(decodedContent, callback);
             });
         });
     },
@@ -87,9 +87,10 @@ function shareAsQRcode(id){
     UIInterface.shareAsQRcode(id);
 }
 
-function onDecodeComplete(content, callback){
+function onDecodeComplete(content, closeScanner){
+    console.log('Decoded QRCode:', content);
     var isValid = testOtpAuthUri(content);
-    isFunction(callback) && callback(content, isValid);
+    isFunction(closeScanner) && closeScanner(content, isValid);
     if (!isValid) {
         showToast($t('invalid_otpauth_url'));
     } else {

@@ -132,6 +132,8 @@ function loadJS(url, callback){
 //onunload, onstorage
 var H5Storage = {
     storage: function(){
+        //  https://localforage.github.io/localForage/#settings-api-setdriver
+        localStorage.setDriver([localforage.INDEXEDDB, localforage.LOCALSTORAGE, localforage.WEBSQL]);
         return localStorage;
     },
     checkAvailable: function (){
@@ -204,20 +206,31 @@ function parseOtpAuthUri(uri){
     if (!testOtpAuthUri(uri)) {
         throw new Error("Error: invalid TOTP URL");
     }
+    // var uri = 'otpauth://totp/totp.sample.com:hafuman@sample.com?secret=SQKOJHWK546TZ2CFHJFC4Z7EUOO4CPB5&issuer=totp.sample.com';
+    var rest = uri.slice('otpauth://'.length);
+  
+    var firstSlashIndex = rest.indexOf('/');
+    var type = rest.slice(0, firstSlashIndex); // "totp" or "otp"
+    var pathAndQuery = rest.slice(firstSlashIndex); 
+    var path = pathAndQuery.slice(1, pathAndQuery.indexOf('?')); // "ACME%20Co:john.doe@email.com"
     var uriObj = new URLObj(uri);
-    var pathParts = uriObj['pathname'].split('/');
-    var len = pathParts.length;
+    var issuer = uriObj['searchParams'].get('issuer');
+    if (!issuer && path.indexOf(':') > 0) {
+        issuer = decodeURIComponent(path.split(':')[0].replace(/^\s+?|\s+?$/g, '')); // take "label" as issuer if "issuer" is not specified in query string.
+    }
+
+    var account = decodeURIComponent(path.indexOf(':') > 0 ? path.split(':')[1].replace(/^\s+?|\s+?$/g, '') : path.replace(/^\s+?|\s+?$/g, '')); // take "label" as account if "account" is not specified in query string.
     var OTPEntity = {
         //'raw': uri,
-        'schema': pathParts[len-2].toLowerCase(), //totp
-        'account': decodeURIComponent(pathParts[len-1].indexOf(':') > 0 ? pathParts[len-1].split(':')[1].replace(/^\s+?|\s+?$/g, '') : pathParts[len-1]),
-        'secret': uriObj['searchParams'].get('secret').toUpperCase(), // Secret is encoded in base32.
-        'issuer': pathParts[len-1].indexOf(':') > 0 ? decodeURIComponent(pathParts[len-1].split(':')[0].replace(/^\s+?|\s+?$/g, '')) : uriObj['searchParams'].get('issuer'),
+        'schema': type, //totp or hotp
+        'account': account,
+        'issuer': issuer,
+        'secret': uriObj['searchParams'].get('secret'), // Secret is encoded in base32.
         'algorithm' : uriObj['searchParams'].get('algorithm') || 'SHA1', //SHA1 (default) || SHA256 || SHA512
         'digits' : uriObj['searchParams'].get('digits') || 6, // 6(default) || 8
         'period' : uriObj['searchParams'].get('period') || 30, // default is 30s
-        'counter': uriObj['searchParams'].get('counter') // If it is hotp, counter is required.
-    };
+        'counter': uriObj['searchParams'].get('counter') || '' // If it is hotp, counter is required.
+    }; 
     OTPEntity.id = (OTPEntity.schema + '/' + OTPEntity.issuer + ':' + OTPEntity.account).toLowerCase();
     return OTPEntity;
 }
@@ -341,7 +354,7 @@ function readFile(file, readAs, callback){
     }
 }
 
-function decodeLocalImage(callback){
+function decodeLocalImage(onDecoded){
     try {
         openFileDlg(async function (content){ // content is dataURL
             const img = new Image();
@@ -359,40 +372,13 @@ function decodeLocalImage(callback){
             const decoded = qr.decodeQR(
                 ctx.getImageData(0, 0, canvas.width, canvas.height)
             );
-            onDecodeComplete(decoded, callback);
+            isFunction(onDecoded) && onDecoded(decoded);
         });
     } catch (e){
         alert(JSON.stringify(e));
     }
     
 }
-
-function tryCozmoDecoder(dataURL, onDecodeSuccess, onError){
-    loadJS('./js/jsQR.min.js', function () {
-        cozmoDecoder(dataURL, onDecodeSuccess, onError);
-    });
-}
-
-function cozmoDecoder(dataURL, onDecodeSuccess, onError){
-    var canvasElement = document.createElement("canvas");
-    var canvas = canvasElement.getContext("2d");
-    var img = new Image();
-    img.src = dataURL;
-    img.onload = function (){
-        canvasElement.height = img.height;
-        canvasElement.width = img.width;
-        canvas.drawImage(img, 0, 0, canvasElement.width, canvasElement.height);
-        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        img = null;
-        var code = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts: "dontInvert"});
-        if (code) {
-            isFunction(onDecodeSuccess) && onDecodeSuccess.apply(null, [code.data]);
-        } else {
-            isFunction(onError) && onError();
-        }
-    };
-}
-
 
 function setSecondTick(func){
     var id;
